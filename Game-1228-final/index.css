@@ -1,0 +1,2058 @@
+﻿/* ============================================
+   登上十字架 - Cross Quest
+   Main Stylesheet
+   ============================================ */
+
+/* CSS Variables - Design Tokens */
+:root {
+    /* Colors */
+    --primary: #7c3aed;
+    --primary-dark: #5b21b6;
+    --secondary: #06b6d4;
+    --accent: #f59e0b;
+    --danger: #ef4444;
+    --success: #10b981;
+
+    /* Backgrounds */
+    --bg-dark: #0f0f23;
+    --bg-card: rgba(30, 30, 60, 0.95);
+    --bg-overlay: rgba(0, 0, 0, 0.85);
+    --bg-glass: rgba(255, 255, 255, 0.05);
+
+    /* Text */
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+    --gradient-gold: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    --gradient-danger: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+
+    /* Shadows */
+    --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 30px rgba(124, 58, 237, 0.3);
+
+    /* Spacing */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+
+    /* Typography */
+    --font-main: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+    --font-pixel: 'Press Start 2P', monospace;
+}
+
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-image:
+        radial-gradient(ellipse at top, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+}
+
+/* Screen System */
+.screen {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-overlay);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    animation: fadeIn 0.3s ease;
+}
+
+.overlay.hidden {
+    display: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Merge Animation */
+.merge-animation {
+    animation: mergeFlash 2s ease-in-out;
+    position: relative;
+}
+
+.merge-animation::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(124, 58, 237, 0.2) 70%, transparent 100%);
+    z-index: 999;
+    pointer-events: none;
+    animation: flashOverlay 2s ease-in-out;
+}
+
+@keyframes mergeFlash {
+    0% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(2) contrast(1.2);
+        transform: scale(1.02);
+    }
+
+    100% {
+        filter: brightness(1);
+        transform: scale(1);
+    }
+}
+
+@keyframes flashOverlay {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Firework Animation */
+.firework {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 1),
+        0 0 0 0 rgba(255, 255, 0, 1),
+        0 0 0 0 rgba(0, 255, 0, 1),
+        0 0 0 0 rgba(0, 0, 255, 1);
+    animation: explode 1s ease-out forwards;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 1),
+            0 0 0 0 rgba(255, 255, 0, 1),
+            0 0 0 0 rgba(0, 255, 0, 1),
+            0 0 0 0 rgba(0, 0, 255, 1);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0;
+        box-shadow: -50px -50px 0 0 rgba(255, 0, 0, 0),
+            50px -50px 0 0 rgba(255, 255, 0, 0),
+            -50px 50px 0 0 rgba(0, 255, 0, 0),
+            50px 50px 0 0 rgba(0, 0, 255, 0);
+    }
+}
+
+.title-container {
+    text-align: center;
+    animation: slideUp 0.8s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.game-title {
+    font-size: 4rem;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 60px rgba(245, 158, 11, 0.5);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+}
+
+.game-subtitle {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    letter-spacing: 0.3em;
+}
+
+/* Character Selection */
+.character-select {
+    margin-bottom: 2rem;
+}
+
+.character-select h3 {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-weight: normal;
+}
+
+.character-options {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.character-card {
+    background: var(--bg-glass);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.character-card:hover {
+    background: rgba(124, 58, 237, 0.2);
+    border-color: var(--primary);
+    transform: translateY(-5px);
+}
+
+.character-card.selected {
+    background: rgba(124, 58, 237, 0.3);
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.4);
+}
+
+.char-avatar {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.char-name {
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.char-stats {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.char-desc {
+    font-size: 0.7rem;
+    color: var(--secondary);
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+/* Menu Buttons */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.menu-btn {
+    background: var(--gradient-primary);
+    border: none;
+    color: white;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 200px;
+    font-family: var(--font-main);
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.menu-btn:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-glow);
+}
+
+.menu-btn.danger {
+    background: var(--gradient-danger);
+}
+
+.credits {
+    position: fixed;
+    bottom: 2rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   Save/Load Screen
+   ============================================ */
+.save-container {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    min-width: 400px;
+}
+
+.save-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+}
+
+.save-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.save-slot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-glass);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.save-slot:hover {
+    background: rgba(124, 58, 237, 0.2);
+    border-color: var(--primary);
+}
+
+.slot-name {
+    font-weight: bold;
+}
+
+.slot-info {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   Game Screen
+   ============================================ */
+#game-screen {
+    flex-direction: column;
+    background: #1a1a2e;
+}
+
+#game-canvas {
+    border: 4px solid var(--primary);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-glow);
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* HUD */
+#hud {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+    z-index: 10;
+}
+
+#hud-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#scene-name {
+    background: var(--bg-glass);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    border-left: 3px solid var(--secondary);
+}
+
+#hud-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+#player-name {
+    font-weight: bold;
+    color: var(--accent);
+}
+
+#hp-bar {
+    width: 150px;
+    height: 24px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid var(--danger);
+}
+
+#hp-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, #ef4444 0%, #f97316 100%);
+    transition: width 0.3s ease;
+}
+
+#hp-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* Interaction Prompt */
+#interact-prompt {
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-card);
+    padding: 0.5rem 1.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    animation: pulse 1.5s infinite;
+    z-index: 10;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* Equipped Slot */
+#equipped-slot {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 10;
+}
+
+.item-slot {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-glass);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-sm);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.item-slot:hover {
+    border-color: var(--accent);
+    transform: scale(1.1);
+}
+
+.item-slot.empty {
+    border-style: dashed;
+    opacity: 0.5;
+}
+
+.slot-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+/* Inventory & Menu Buttons */
+#inventory-btn,
+#menu-btn {
+    position: fixed;
+    bottom: 1rem;
+    background: var(--bg-card);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+#inventory-btn {
+    right: 5rem;
+}
+
+#menu-btn {
+    right: 1rem;
+    font-size: 1.2rem;
+}
+
+#inventory-btn:hover,
+#menu-btn:hover {
+    background: var(--primary);
+    transform: scale(1.05);
+}
+
+/* ============================================
+   Inventory Screen
+   ============================================ */
+.inventory-container {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    min-width: 400px;
+}
+
+.inventory-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+}
+
+#inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+#inventory-grid .item-slot {
+    width: 56px;
+    height: 56px;
+}
+
+#item-details {
+    background: var(--bg-glass);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    margin-top: 1rem;
+}
+
+#item-name {
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+}
+
+#item-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+.item-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    font-family: var(--font-main);
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    filter: brightness(1.2);
+}
+
+.action-btn.danger {
+    background: var(--danger);
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: var(--danger);
+}
+
+/* ============================================
+   Dialogue Box
+   ============================================ */
+#dialogue-box {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    background: var(--bg-card);
+    border: 3px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    z-index: 3000;
+    animation: slideUp 0.3s ease;
+}
+
+#dialogue-speaker {
+    color: var(--accent);
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+#dialogue-text {
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 3rem;
+}
+
+#dialogue-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.dialogue-choice {
+    background: var(--bg-glass);
+    border: 2px solid var(--primary);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    color: var(--text-primary);
+    text-align: left;
+    font-family: var(--font-main);
+    transition: all 0.3s ease;
+}
+
+.dialogue-choice:hover {
+    background: rgba(124, 58, 237, 0.3);
+    border-color: var(--accent);
+}
+
+.dialogue-choice.selected {
+    background: rgba(124, 58, 237, 0.3);
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+#dialogue-continue {
+    text-align: right;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    animation: pulse 1.5s infinite;
+}
+
+/* ============================================
+   Combat Screen
+   ============================================ */
+.combat-container {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 90%;
+    max-width: 700px;
+}
+
+.combat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.combatant {
+    text-align: center;
+    flex: 1;
+}
+
+.combatant-name {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.player-side .combatant-name {
+    color: var(--secondary);
+}
+
+.enemy-side .combatant-name {
+    color: var(--danger);
+}
+
+.combat-hp-bar {
+    width: 100%;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+}
+
+.combat-hp-fill {
+    height: 100%;
+    width: 100%;
+    background: var(--success);
+    transition: width 0.5s ease;
+}
+
+.combat-hp-fill.enemy {
+    background: var(--danger);
+}
+
+.combatant-hp-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.vs-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--accent);
+    padding: 0 2rem;
+}
+
+.combat-main {
+    min-height: 200px;
+}
+
+#combat-message {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    min-height: 2rem;
+}
+
+#question-box {
+    background: var(--bg-glass);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+}
+
+#question-text {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+#answer-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.answer-btn {
+    background: var(--bg-glass);
+    border: 2px solid var(--primary);
+    color: var(--text-primary);
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.answer-btn:hover {
+    background: rgba(124, 58, 237, 0.3);
+    border-color: var(--accent);
+    transform: scale(1.02);
+}
+
+.answer-btn.correct {
+    background: rgba(16, 185, 129, 0.3);
+    border-color: var(--success);
+}
+
+.answer-btn.wrong {
+    background: rgba(239, 68, 68, 0.3);
+    border-color: var(--danger);
+}
+
+#combat-result {
+    text-align: center;
+    padding: 2rem;
+}
+
+#result-text {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+#result-text.victory {
+    color: var(--success);
+}
+
+#result-text.defeat {
+    color: var(--danger);
+}
+
+#result-reward {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   Pause Menu
+   ============================================ */
+.pause-container {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+    min-width: 300px;
+}
+
+.pause-container h2 {
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+}
+
+.pause-container .menu-btn {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.75rem;
+}
+
+/* ============================================
+   Game Over & Ending Screens
+   ============================================ */
+.gameover-container,
+.ending-container {
+    text-align: center;
+    animation: slideUp 0.8s ease;
+}
+
+.gameover-container h1 {
+    font-size: 3rem;
+    color: var(--danger);
+    margin-bottom: 1rem;
+}
+
+.gameover-container p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.ending-container h1 {
+    font-size: 3rem;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+}
+
+#ending-text {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes flash {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.shake {
+    animation: shake 0.3s ease;
+}
+
+.flash {
+    animation: flash 0.2s ease 3;
+}
+
+/* Damage Numbers */
+.damage-number {
+    position: fixed;
+    font-size: 1.5rem;
+    font-weight: bold;
+    pointer-events: none;
+    animation: floatUp 1s ease forwards;
+    z-index: 200;
+}
+
+.damage-number.player-damage {
+    color: var(--danger);
+}
+
+.damage-number.enemy-damage {
+    color: var(--success);
+}
+
+.damage-number.crit {
+    font-size: 2rem;
+    color: var(--accent);
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 768px) {
+    .game-title {
+        font-size: 2.5rem;
+    }
+
+    .character-options {
+        flex-direction: column;
+    }
+
+    #game-canvas {
+        width: 100%;
+        height: auto;
+    }
+
+    #answer-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================
+   Achievement System
+   ============================================ */
+
+/* Secondary button style */
+.menu-btn.secondary {
+    background: var(--bg-glass);
+    border: 2px solid var(--primary);
+}
+
+.menu-btn.secondary:hover {
+    background: rgba(124, 58, 237, 0.3);
+}
+
+/* Achievement Screen Container */
+.achievement-container {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 800px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+
+.achievement-container h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+    font-size: 1.8rem;
+}
+
+/* Achievement Stats */
+.achievement-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--bg-glass);
+    border-radius: var(--radius-md);
+}
+
+.stat-item {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+/* Achievement Sections */
+.achievements-section {
+    margin-bottom: 2rem;
+}
+
+.achievements-section h3 {
+    color: var(--secondary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--bg-glass);
+}
+
+/* Achievement Grid */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+/* Achievement Card */
+.achievement-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-glass);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+}
+
+.achievement-card.unlocked {
+    border-color: var(--success);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.achievement-card.locked {
+    opacity: 0.6;
+}
+
+.achievement-card .achievement-icon {
+    font-size: 2rem;
+    min-width: 50px;
+    text-align: center;
+}
+
+.achievement-card .achievement-details {
+    flex: 1;
+}
+
+.achievement-card .achievement-name {
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.achievement-card .achievement-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* Achievement Notification Popup */
+.achievement-notification {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(6, 182, 212, 0.95) 100%);
+    padding: 1rem 2rem;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--shadow-lg);
+    z-index: 2000;
+    transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.achievement-notification.show {
+    top: 20px;
+}
+
+.achievement-notification .achievement-icon {
+    font-size: 2.5rem;
+}
+
+.achievement-notification .achievement-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.achievement-notification .achievement-label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.achievement-notification .achievement-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+}
+
+/* Achievement screen scrollbar */
+.achievement-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.achievement-container::-webkit-scrollbar-track {
+    background: var(--bg-glass);
+    border-radius: 4px;
+}
+
+.achievement-container::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 4px;
+}
+
+.achievement-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* ============================================
+   Corner Buttons
+   ============================================ */
+.corner-btn {
+    position: fixed;
+    z-index: 50;
+    background: var(--bg-glass);
+    border: 2px solid var(--primary);
+    color: var(--text-primary);
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.corner-btn:hover {
+    background: rgba(124, 58, 237, 0.3);
+    transform: scale(1.05);
+}
+
+.corner-btn.top-left {
+    top: 1.5rem;
+    left: 1.5rem;
+}
+
+/* ============================================
+   Character Confirmation Screen
+   ============================================ */
+.confirm-container {
+    background: var(--bg-card);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+}
+
+.confirm-container h2 {
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.confirm-character {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: var(--bg-glass);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.confirm-avatar {
+    font-size: 4rem;
+    min-width: 80px;
+    text-align: center;
+}
+
+.confirm-info {
+    flex: 1;
+}
+
+.confirm-info h3 {
+    color: var(--accent);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.confirm-stats {
+    color: var(--secondary);
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.confirm-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Difficulty Selection */
+.difficulty-select {
+    margin-bottom: 2rem;
+}
+
+.difficulty-select h3 {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-weight: normal;
+}
+
+.difficulty-options {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.difficulty-card {
+    background: var(--bg-glass);
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.difficulty-card:hover:not(.locked) {
+    background: rgba(124, 58, 237, 0.2);
+    border-color: var(--primary);
+}
+
+.difficulty-card.selected {
+    background: rgba(124, 58, 237, 0.3);
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.3);
+}
+
+.difficulty-card.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.diff-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.diff-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.confirm-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.confirm-buttons .menu-btn {
+    min-width: 150px;
+}
+
+/* ============================================
+   Password Modal
+   ============================================ */
+.password-container {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg), 0 0 60px rgba(124, 58, 237, 0.3);
+    width: 380px;
+    animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    position: relative;
+}
+
+.password-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+}
+
+@keyframes modalSlideIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(-30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.password-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.password-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.5));
+    }
+
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.8));
+    }
+}
+
+.password-header h2 {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.password-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.password-input-group {
+    margin-bottom: 1.5rem;
+}
+
+.password-input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    font-size: 1.1rem;
+    border: 2px solid rgba(124, 58, 237, 0.3);
+    border-radius: var(--radius-md);
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    transition: all 0.3s ease;
+    text-align: center;
+    letter-spacing: 0.3em;
+}
+
+.password-input::placeholder {
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+}
+
+.password-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.password-input.error {
+    border-color: var(--danger);
+    animation: shake 0.5s ease;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-10px);
+    }
+
+    40% {
+        transform: translateX(10px);
+    }
+
+    60% {
+        transform: translateX(-10px);
+    }
+
+    80% {
+        transform: translateX(10px);
+    }
+}
+
+.password-error {
+    color: var(--danger);
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.password-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.password-buttons .menu-btn {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    min-width: auto;
+}
+
+.password-buttons .menu-btn.secondary {
+    background: var(--bg-glass);
+    border: 2px solid var(--primary);
+}
+
+.password-buttons .menu-btn.secondary:hover {
+    background: rgba(124, 58, 237, 0.2);
+}
+
+.password-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(245, 158, 11, 0.1);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.password-hint span {
+    color: var(--accent);
+    font-size: 0.85rem;
+}
+
+.hint-icon {
+    font-size: 1rem;
+}
+
+/* ============================================
+   Jesus's Wrath Overlay
+   ============================================ */
+.wrath-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.wrath-overlay.active {
+    opacity: 1;
+}
+
+.wrath-overlay.shake {
+    animation: screenShake 0.5s ease-in-out infinite;
+}
+
+.wrath-overlay.fade-out {
+    opacity: 0;
+}
+
+@keyframes screenShake {
+
+    0%,
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    10% {
+        transform: translate(-10px, -5px) rotate(-1deg);
+    }
+
+    20% {
+        transform: translate(10px, 5px) rotate(1deg);
+    }
+
+    30% {
+        transform: translate(-8px, 8px) rotate(-0.5deg);
+    }
+
+    40% {
+        transform: translate(8px, -8px) rotate(0.5deg);
+    }
+
+    50% {
+        transform: translate(-5px, 5px) rotate(-1deg);
+    }
+
+    60% {
+        transform: translate(5px, -5px) rotate(1deg);
+    }
+
+    70% {
+        transform: translate(-8px, -5px) rotate(-0.5deg);
+    }
+
+    80% {
+        transform: translate(8px, 5px) rotate(0.5deg);
+    }
+
+    90% {
+        transform: translate(-5px, -8px) rotate(-1deg);
+    }
+}
+
+.wrath-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    animation: wrathZoomIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes wrathZoomIn {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.wrath-image {
+    max-width: 80%;
+    max-height: 60vh;
+    border-radius: var(--radius-lg);
+    box-shadow:
+        0 0 50px rgba(255, 0, 0, 0.5),
+        0 0 100px rgba(255, 100, 0, 0.3),
+        0 0 150px rgba(255, 200, 0, 0.2);
+    border: 4px solid rgba(255, 215, 0, 0.5);
+    animation: wrathGlow 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes wrathGlow {
+    0% {
+        box-shadow:
+            0 0 50px rgba(255, 0, 0, 0.5),
+            0 0 100px rgba(255, 100, 0, 0.3),
+            0 0 150px rgba(255, 200, 0, 0.2);
+    }
+
+    100% {
+        box-shadow:
+            0 0 80px rgba(255, 0, 0, 0.8),
+            0 0 150px rgba(255, 100, 0, 0.5),
+            0 0 200px rgba(255, 200, 0, 0.3);
+    }
+}
+
+.wrath-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow:
+        0 0 20px rgba(255, 0, 0, 0.8),
+        0 0 40px rgba(255, 100, 0, 0.6),
+        0 0 60px rgba(255, 200, 0, 0.4),
+        2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: wrathTextPulse 0.3s ease-in-out infinite alternate;
+    text-align: center;
+}
+
+@keyframes wrathTextPulse {
+    0% {
+        transform: scale(1);
+        text-shadow:
+            0 0 20px rgba(255, 0, 0, 0.8),
+            0 0 40px rgba(255, 100, 0, 0.6),
+            0 0 60px rgba(255, 200, 0, 0.4),
+            2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    100% {
+        transform: scale(1.05);
+        text-shadow:
+            0 0 30px rgba(255, 0, 0, 1),
+            0 0 60px rgba(255, 100, 0, 0.8),
+            0 0 80px rgba(255, 200, 0, 0.6),
+            2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* ============================================
+   Quest Tracker
+   ============================================ */
+.quest-tracker {
+    position: absolute;
+    top: 60px;
+    right: 1rem;
+    min-width: 180px;
+    max-width: 250px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    z-index: 100;
+    box-shadow:
+        0 4px 20px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.quest-tracker:not(.hidden) {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.quest-tracker.fade-in {
+    animation: questFadeIn 0.5s ease forwards;
+}
+
+@keyframes questFadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.quest-header {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quest-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+    color: var(--text);
+    transition: all 0.3s ease;
+}
+
+.quest-checkbox {
+    font-size: 0.85rem;
+    width: 1.2rem;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.quest-name {
+    flex: 1;
+}
+
+.quest-item.completed .quest-checkbox {
+    color: var(--success);
+}
+
+.quest-item.completed .quest-name {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+}
+
+.quest-item.side-quest {
+    border-left: 2px solid var(--secondary);
+    padding-left: 0.5rem;
+    margin-left: 0.25rem;
+}
+
+.quest-type-label {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+    background: var(--secondary);
+    color: white;
+    border-radius: var(--radius-sm);
+    font-weight: bold;
+}
+
+.quest-item:not(.completed):hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-sm);
+}
+
+.quest-type-label.hidden-type {
+    background: #9333ea;
+    /* Purple for hidden quests */
+}
+
+/* ============================================
+   Intro Animation Screen
+   ============================================ */
+#intro-screen {
+    background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #0f0f23 100%);
+    color: white;
+    z-index: 2000;
+    overflow: hidden;
+    position: relative;
+    flex-direction: column;
+}
+
+/* Epic Hazy Mist Effect */
+#intro-screen::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: 
+        radial-gradient(ellipse at 30% 20%, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.05) 0%, transparent 40%);
+    filter: blur(80px);
+    animation: mistRotate 30s linear infinite;
+    pointer-events: none;
+}
+
+/* Floating Stars Effect */
+#intro-screen::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.8), transparent),
+        radial-gradient(2px 2px at 40% 70%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.7), transparent),
+        radial-gradient(2px 2px at 80% 50%, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.9), transparent),
+        radial-gradient(2px 2px at 90% 10%, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 50% 90%, rgba(255,255,255,0.8), transparent);
+    animation: starsFloat 8s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes starsFloat {
+    0% { transform: translateY(0) scale(1); opacity: 0.5; }
+    100% { transform: translateY(-20px) scale(1.1); opacity: 1; }
+}
+
+@keyframes mistRotate {
+    from { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.1); }
+    to { transform: rotate(360deg) scale(1); }
+}
+
+#intro-text-container {
+    position: relative;
+    z-index: 10;
+}
+
+.intro-container {
+    width: 85%;
+    max-width: 900px;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+}
+
+/* Base Intro Text Style */
+.intro-text {
+    font-size: 2rem;
+    line-height: 2;
+    font-family: 'Noto Serif TC', 'Microsoft JhengHei', serif;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    opacity: 0;
+    transition: opacity 1.2s ease-in-out, transform 0.8s ease;
+    white-space: pre-wrap;
+    transform: translateY(10px);
+    letter-spacing: 0.05em;
+}
+
+.intro-text.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Different Text Style Variants */
+.intro-text-highlight {
+    color: #fbbf24;
+    text-shadow: 
+        0 0 20px rgba(251, 191, 36, 0.5),
+        0 0 40px rgba(251, 191, 36, 0.3);
+    font-weight: 600;
+}
+
+.intro-text-important {
+    color: #60a5fa;
+    text-shadow: 
+        0 0 20px rgba(96, 165, 250, 0.5),
+        0 0 40px rgba(96, 165, 250, 0.3);
+}
+
+.intro-text-dramatic {
+    color: #c084fc;
+    font-size: 2.2rem;
+    text-shadow: 
+        0 0 30px rgba(192, 132, 252, 0.6),
+        0 0 60px rgba(192, 132, 252, 0.3);
+    animation: dramaticPulse 2s ease-in-out infinite;
+}
+
+.intro-text-finale {
+    color: #f8fafc;
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #fcd34d 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.5));
+    animation: finaleGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes dramaticPulse {
+    0%, 100% { 
+        transform: translateY(0) scale(1); 
+        filter: brightness(1);
+    }
+    50% { 
+        transform: translateY(-5px) scale(1.02); 
+        filter: brightness(1.2);
+    }
+}
+
+@keyframes finaleGlow {
+    0% { 
+        filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4)) brightness(1);
+    }
+    100% { 
+        filter: drop-shadow(0 0 40px rgba(251, 191, 36, 0.7)) brightness(1.15);
+    }
+}
+
+/* Particles Effect for Special Slides */
+.intro-particles::before,
+.intro-particles::after {
+    content: '✨';
+    position: absolute;
+    font-size: 1.5rem;
+    animation: particleFloat 3s ease-in-out infinite;
+    opacity: 0.6;
+}
+
+.intro-particles::before {
+    left: -50px;
+    top: 50%;
+    animation-delay: 0s;
+}
+
+.intro-particles::after {
+    right: -50px;
+    top: 50%;
+    animation-delay: 1.5s;
+}
+
+@keyframes particleFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-30px) rotate(180deg);
+        opacity: 0.8;
+    }
+}
+
+/* Skip Hint */
+.intro-skip {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    opacity: 0.6;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: opacity 0.3s ease;
+}
+
+.intro-skip:hover {
+    opacity: 1;
+}
+
+/* Progress Indicator */
+.intro-progress {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+.intro-progress-current {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Cross Icon Animation */
+.intro-container::before {
+    content: '✝️';
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    opacity: 0.3;
+    animation: crossFloat 4s ease-in-out infinite;
+}
+
+@keyframes crossFloat {
+    0%, 100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 0.2;
+    }
+    50% {
+        transform: translateX(-50%) translateY(-15px);
+        opacity: 0.5;
+    }
+}
+
+@keyframes textGlow {
+    0% {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    100% {
+        text-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+    }
+}
+
+.intro-text-mythical {
+    color: var(--accent);
+    font-weight: bold;
+    animation: textGlow 2s ease-in-out infinite alternate;
+}
