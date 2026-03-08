@@ -1,4 +1,4 @@
-﻿/* ============================================
+/* ============================================
    登上十字架 - Cross Quest
    Main Stylesheet
    ============================================ */
@@ -807,6 +807,20 @@ body {
     background: var(--bg-glass);
     padding: 1.5rem;
     border-radius: var(--radius-md);
+}
+
+.question-category {
+    display: inline-block;
+    background: rgba(124, 58, 237, 0.25);
+    border: 1px solid rgba(124, 58, 237, 0.5);
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 0.06em;
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
 }
 
 #question-text {

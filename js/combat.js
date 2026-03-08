@@ -31,6 +31,7 @@ const Combat = {
         this.message = Utils.$('combat-message');
         this.questionBox = Utils.$('question-box');
         this.questionText = Utils.$('question-text');
+        this.questionCategory = Utils.$('question-category');
         this.answerOptions = Utils.$('answer-options');
         this.resultBox = Utils.$('combat-result');
 
@@ -185,6 +186,11 @@ const Combat = {
 
         this.turnCount++;
         this.currentQuestion = getRandomQuestion(this.enemy.difficulty);
+
+        // Show category badge
+        if (this.questionCategory) {
+            this.questionCategory.textContent = getCategoryName(this.currentQuestion.category);
+        }
 
         this.questionText.textContent = this.currentQuestion.question;
 
